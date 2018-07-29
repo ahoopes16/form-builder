@@ -23,15 +23,29 @@ INPUT_FILE = "forms.txt"
 # FUNCTIONS #
 #############
 
+def handle_error_and_exit(custom_message, error):
+    """Prints out the error, along with a custom message and exits."""
+    print(custom_message)
+    print("Received the error: {}".format(error))
+    exit(1)
+
 def get_input_from_file():
     """Get the user input from the forms.txt file.
     @return form_components the components from the file
     """
 
-    with open(INPUT_FILE) as inputs:
-        form_components = inputs.readlines()
+    try:
+        with open(INPUT_FILE) as inputs:
+            form_components = inputs.readlines()
 
-    form_components = [comp.strip() for comp in form_components]
+        form_components = [comp.strip() for comp in form_components]
+    
+    except Exception as error:
+        custom_message = "Could not open the file {}.\n".format(INPUT_FILE)
+        custom_message += "Please check to make sure the file is in this " +\
+                          "directory and is named 'forms.txt'."
+        handle_error_and_exit(custom_message, error)
+
     return form_components
 
 def get_input_from_cmd_line():
@@ -40,9 +54,7 @@ def get_input_from_cmd_line():
     """
 
     # The first arg is always the name of the script, cut that off
-    form_components = sys.argv[1:]
-
-    return form_components
+    return sys.argv[1:]
 
 def get_input():
     """Get the user input, either from cmd line or a .txt file"""
@@ -62,7 +74,6 @@ def main():
 
     # Get input
     form_components = get_input()
-    print("These are the form components:")
     pprint(form_components)
 
     # Build HTML leading up to the form
