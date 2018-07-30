@@ -1,3 +1,0 @@
-First Name:text
-Last Name:text
-Date of Birth:date

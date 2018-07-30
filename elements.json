@@ -1,0 +1,14 @@
+[
+    {
+        "label" : "First Name",
+        "type" : "text"
+    },
+    {
+        "label" : "Last Name",
+        "type" : "text"
+    },
+    {
+        "label" : "Date of Birth",
+        "type" : "date"
+    }
+]
