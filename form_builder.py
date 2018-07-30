@@ -10,7 +10,6 @@ the form in question.
 ###########
 
 import json
-from pprint import pprint
 
 #############
 # CONSTANTS #
@@ -89,7 +88,10 @@ def build_html_form_elements(elements):
     html_contents = ""
 
     for element in elements:
-        html_contents += build_general_element(element)
+        if element['type'] in ACCEPTED_GENERAL_TYPES:
+            html_contents += build_general_element(element)
+        else:
+            print("Skipping element {} because it isn't one we accept!".format(element['type']))
 
     return html_contents
 
