@@ -16,7 +16,9 @@ from pprint import pprint
 # CONSTANTS #
 #############
 
-INPUT_TYPES = ["text", "date"]
+ACCEPTED_GENERAL_TYPES = ["text", "date", "color", "datetime", "datetime-local",
+                          "email", "month", "number", "password", "search",
+                          "time", "url", "week"]
 INPUT_FILE = "elements.json"
 OUTPUT_FILE = "mynewform.html"
 
@@ -60,8 +62,22 @@ def build_html_file_head():
     html_contents += "        <meta charset='UTF-8'>\n"
     html_contents += "    </head>\n"
     html_contents += "    <body>\n"
-    html_contents += "        <h2>Your Form</h2>\n"
+    html_contents += "        <h1>Your Form</h1>\n"
     html_contents += "        <form>\n"
+
+    return html_contents
+
+def build_general_element(element):
+    """Build the HTML for a text form element.
+    @param element: The element to turn into a form component
+    @return html_contents: The HTML for the form component"""
+
+    element_name = element['label'].replace(' ', '-').lower()
+
+    html_contents = "            {}:<br>\n".format(element['label'])
+    html_contents += '            <input type="{}" name="{}">\n'.format(element['type'], \
+                                                                        element_name)
+    html_contents += "            <br><br>\n"
 
     return html_contents
 
@@ -70,7 +86,12 @@ def build_html_form_elements(elements):
     @param elements: The form elements to convert to HTML.
     @return html_contents: The HTML generated for the elements
     """
-    return ""
+    html_contents = ""
+
+    for element in elements:
+        html_contents += build_general_element(element)
+
+    return html_contents
 
 def build_html_file_foot():
     """Build the ending of the HTML file.

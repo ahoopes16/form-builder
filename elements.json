@@ -10,5 +10,49 @@
     {
         "label" : "Date of Birth",
         "type" : "date"
+    },
+    {
+        "label" : "Favorite Color",
+        "type" : "color"
+    },
+    {
+        "label" : "Date Time",
+        "type" : "datetime"
+    },
+    {
+        "label" : "Date Time Local",
+        "type" : "datetime-local"
+    },
+    {
+        "label" : "Email Address",
+        "type" : "email"
+    },
+    {
+        "label" : "Month",
+        "type" : "month"
+    },
+    {
+        "label" : "Number",
+        "type" : "number"
+    },
+    {
+        "label" : "Password",
+        "type" : "password"
+    },
+    {
+        "label" : "Search Query",
+        "type" : "search"
+    },
+    {
+        "label" : "Time of Day",
+        "type" : "time"
+    },
+    {
+        "label" : "Favorite Website",
+        "type" : "url"
+    },
+    {
+        "label" : "Favorite Week",
+        "type" : "week"
     }
 ]
