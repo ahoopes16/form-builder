@@ -42,7 +42,7 @@ def get_input_from_file():
 
         form_components = [comp.strip() for comp in form_components]
 
-    except Exception as error:
+    except IOError as error:
         custom_message = "Could not open the file {}.\n".format(INPUT_FILE)
         custom_message += "Please check to make sure the file is in this " +\
                           "directory and is named 'forms.txt'."
@@ -90,14 +90,19 @@ def build_html_file_head():
 
     return html_contents
 
-
+def build_html_form_elements(elements):
+    """Build the HTML for each of the form elements.
+    @param elements: The form elements to convert to HTML.
+    @return html_contents: The HTML generated for the elements
+    """
+    pass
 
 def build_html_file_foot():
     """Build the ending of the HTML file.
     @return html_contents: The contents of the HTML file foot
     """
 
-    html_contents = '<input type="submit" value="Submit">'
+    html_contents = '<input type="submit" value="Submit">\n'
     html_contents += "        </form>\n"
     html_contents += "    </body>\n"
     html_contents += "</html>"
@@ -113,7 +118,7 @@ def export_html_file(html):
         output_file = open(OUTPUT_FILE, 'w+')
         output_file.write(html)
         output_file.close()
-    except Exception as error:
+    except IOError as error:
         custom_message = "Could not open file {}\n".format(OUTPUT_FILE)
         custom_message += "Please make sure that I have permission " + \
                           "to create/edit files in this directory."
@@ -123,13 +128,13 @@ def main():
     """The main function that runs the script."""
 
     # Get input
-    form_components = get_input()
+    form_elements = get_input()
 
     # Build HTML leading up to the form
     html = build_html_file_head()
 
     # Build individual form components based on input
-    html += build_html_form_elements()
+    html += build_html_form_elements(form_elements)
 
     # Build HTML to close out the form
     html += build_html_file_foot()
