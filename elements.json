@@ -5,7 +5,11 @@
     },
     {
         "label" : "Last Name",
-        "type" : "text"
+        "type" : "text",
+        "attributes" : {
+            "placeholder" : "Surname",
+            "id" : "last_name"
+        }
     },
     {
         "label" : "Date of Birth",
@@ -89,7 +93,11 @@
                 "checked" : false,
                 "label" : "Thing 3"
             }
-        ]
+        ],
+        "attributes" : {
+            "id" : "my-special-radio",
+            "class" : "radio_buttons"
+        }
     },
     {
         "label" : "Your Favorite File",

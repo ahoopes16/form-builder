@@ -70,6 +70,28 @@ def build_html_file_head():
 
     return html_contents
 
+def build_element_attribute(name, value):
+    """Build the HTML for an element's attribute.
+    @param name: The attribute name
+    @param value: The attribute value
+    @return The HTML for the attribute
+    """
+
+    return '{}="{}" '.format(name, value)
+
+def build_attributes(attributes):
+    """Build the HTML for all of an element's attributes.
+    @param attributes: The dictionary of attributes to generate
+    @return html_content: The HTML for the attributes
+    """
+
+    html_contents = ""
+
+    for attr_name in attributes.keys():
+        html_contents += build_element_attribute(attr_name, attributes[attr_name])
+
+    return html_contents
+
 def build_general_element(element):
     """Build the HTML for a text form element.
     @param element: The element to turn into a form component
@@ -79,9 +101,12 @@ def build_general_element(element):
     element_name = element['label'].replace(' ', '-').lower()
 
     html_contents = "{}:<br>\n".format(element['label'])
-    html_contents += '<input type="{}" name="{}">\n'.format(element['type'], \
-                                                                        element_name)
-    html_contents += "<br><br>\n"
+    html_contents += '<input type="{}" name="{}" '.format(element['type'],\
+                                                            element_name)
+    if 'attributes' in element.keys():
+        html_contents += build_attributes(element['attributes'])
+
+    html_contents += "/><br><br>\n"
 
     return html_contents
 
@@ -102,13 +127,22 @@ def build_checkbox_element(element):
         if option['checked']:
             html_contents += '<input type="{}" name="{}" '.format(element['type'],\
                                                                   element_name)
-            html_contents += 'id="{}" value="{}" checked />\n'.format(lowered_option_label,\
-                                                                      lowered_option_label)
+            html_contents += 'id="{}" value="{}" '.format(lowered_option_label,\
+                                                          lowered_option_label)
+            if 'attributes' in element.keys():
+                html_contents += build_attributes(element['attributes'])
+
+            html_contents += 'checked />\n'
         else:
             html_contents += '<input type="{}" name="{}" '.format(element['type'],\
                                                                   element_name)
-            html_contents += 'id="{}" value="{}" />\n'.format(lowered_option_label,\
+            html_contents += 'id="{}" value="{}" '.format(lowered_option_label,\
                                                               lowered_option_label)
+
+            if 'attributes' in element.keys():
+                html_contents += build_attributes(element['attributes'])
+
+            html_contents += ' />\n'
 
         html_contents += '<label for="{}">{}</label>\n'.format(lowered_option_label,\
                                                                option['label'])
