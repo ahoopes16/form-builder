@@ -160,7 +160,7 @@ def export_html_file(html):
         output_file.close()
         print("Your new form was successfully created!")
         print("Check out the file {}!".format(OUTPUT_FILE))
-        
+
     except IOError as error:
         custom_message = "Could not open file {}\n".format(OUTPUT_FILE)
         custom_message += "Please make sure that I have permission " + \
