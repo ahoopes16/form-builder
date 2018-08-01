@@ -2,7 +2,7 @@
 input they should be. It will generate a valid HTML file of
 the form in question.
 @author: Kevin Hoopes
-@version: July 29, 2018
+@version: July 31, 2018
 """
 
 ###########
@@ -17,7 +17,8 @@ import json
 
 ACCEPTED_GENERAL_TYPES = ["text", "date", "color", "datetime", "datetime-local",
                           "email", "month", "number", "password", "search",
-                          "time", "url", "week"]
+                          "time", "url", "week", "file", "range"]
+ACCEPTED_CHOICE_TYPES = ["checkbox", "radio"]
 INPUT_FILE = "elements.json"
 OUTPUT_FILE = "mynewform.html"
 
@@ -26,7 +27,10 @@ OUTPUT_FILE = "mynewform.html"
 #############
 
 def handle_error_and_exit(custom_message, error):
-    """Prints out the error, along with a custom message and exits."""
+    """Prints out the error, along with a custom message and exits.
+    @param custom_message: The message you want to be printed
+    @param error: The error object, so that people know what actually broke
+    """
 
     print(custom_message)
     print("Received the error: {}".format(error))
@@ -34,7 +38,7 @@ def handle_error_and_exit(custom_message, error):
 
 def get_input_from_file():
     """Get the user input from the forms.txt file.
-    @return form_elements: the components from the file
+    @return form_elements: The components from the file
     """
 
     try:
@@ -56,29 +60,63 @@ def build_html_file_head():
 
     html_contents = "<!DOCTYPE html>\n"
     html_contents += "<html>\n"
-    html_contents += "    <head>\n"
-    html_contents += "        <title>My Automated Form</title>\n"
-    html_contents += "        <meta charset='UTF-8'>\n"
-    html_contents += "    </head>\n"
-    html_contents += "    <body>\n"
-    html_contents += "        <h1>Your Form</h1>\n"
-    html_contents += "        <form>\n"
+    html_contents += "<head>\n"
+    html_contents += "<title>My Automated Form</title>\n"
+    html_contents += "<meta charset='UTF-8'>\n"
+    html_contents += "</head>\n"
+    html_contents += "<body>\n"
+    html_contents += "<h1>Your Form</h1>\n"
+    html_contents += "<form>\n"
 
     return html_contents
 
 def build_general_element(element):
     """Build the HTML for a text form element.
     @param element: The element to turn into a form component
-    @return html_contents: The HTML for the form component"""
+    @return html_contents: The HTML for the form component
+    """
 
     element_name = element['label'].replace(' ', '-').lower()
 
-    html_contents = "            {}:<br>\n".format(element['label'])
-    html_contents += '            <input type="{}" name="{}">\n'.format(element['type'], \
+    html_contents = "{}:<br>\n".format(element['label'])
+    html_contents += '<input type="{}" name="{}">\n'.format(element['type'], \
                                                                         element_name)
-    html_contents += "            <br><br>\n"
+    html_contents += "<br><br>\n"
 
     return html_contents
+
+def build_checkbox_element(element):
+    """Build the HTML for a checkbox form element.
+    @param element: The element to turn into a form element
+    @return html_contents: The HTML for the form component
+    """
+    element_name = element['label'].replace(' ', '-').lower()
+
+    html_contents = "<fieldset>\n"
+    html_contents += "<legend>{}</legend>\n".format(element['label'])
+
+    for option in element['options']:
+        lowered_option_label = option['label'].replace(' ', '-').lower()
+        html_contents += "            <div>\n"
+        if option['checked']:
+            html_contents += '<input type="{}" name="{}" '.format(element['type'],\
+                                                                  element_name)
+            html_contents += 'id="{}" value="{}" checked />\n'.format(lowered_option_label,\
+                                                                      lowered_option_label)
+        else:
+            html_contents += '<input type="{}" name="{}" '.format(element['type'],\
+                                                                  element_name)
+            html_contents += 'id="{}" value="{}" />\n'.format(lowered_option_label,\
+                                                              lowered_option_label)
+
+        html_contents += '<label for="{}">{}</label>\n'.format(lowered_option_label,\
+                                                               option['label'])
+        html_contents += "</div>\n"
+    html_contents += "</fieldset>\n"
+    html_contents += "<br><br>\n"
+
+    return html_contents
+
 
 def build_html_form_elements(elements):
     """Build the HTML for each of the form elements.
@@ -90,6 +128,8 @@ def build_html_form_elements(elements):
     for element in elements:
         if element['type'] in ACCEPTED_GENERAL_TYPES:
             html_contents += build_general_element(element)
+        elif element['type'] in ACCEPTED_CHOICE_TYPES:
+            html_contents += build_checkbox_element(element)
         else:
             print("Skipping element {} because it isn't one we accept!".format(element['type']))
 
@@ -100,9 +140,9 @@ def build_html_file_foot():
     @return html_contents: The contents of the HTML file foot
     """
 
-    html_contents = '            <input type="submit" value="Submit">\n'
-    html_contents += "        </form>\n"
-    html_contents += "    </body>\n"
+    html_contents = '<input type="submit" value="Submit">\n'
+    html_contents += "</form>\n"
+    html_contents += "</body>\n"
     html_contents += "</html>"
 
     return html_contents
@@ -116,6 +156,8 @@ def export_html_file(html):
         output_file = open(OUTPUT_FILE, 'w+')
         output_file.write(html)
         output_file.close()
+        print("Your new form was successfully created!")
+        print("Check out the file {}!".format(OUTPUT_FILE))
     except IOError as error:
         custom_message = "Could not open file {}\n".format(OUTPUT_FILE)
         custom_message += "Please make sure that I have permission " + \

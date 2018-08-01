@@ -57,6 +57,46 @@
     },
     {
         "label" : "Stuff",
-        "type" : "radio"
+        "type" : "checkbox",
+        "options" : [
+            {
+                "checked" : true,
+                "label" : "Thing 1"
+            },
+            {
+                "checked" : false,
+                "label" : "Thing 2"
+            },
+            {
+                "checked" : false,
+                "label" : "Thing 3"
+            }
+        ]
+    },
+    {
+        "label" : "Other Stuff",
+        "type" : "radio",
+        "options" : [
+            {
+                "checked" : true,
+                "label" : "Thing 1"
+            },
+            {
+                "checked" : false,
+                "label" : "Thing 2"
+            },
+            {
+                "checked" : false,
+                "label" : "Thing 3"
+            }
+        ]
+    },
+    {
+        "label" : "Your Favorite File",
+        "type" : "file"
+    },
+    {
+        "label" : "My Range",
+        "type" : "range"
     }
 ]
