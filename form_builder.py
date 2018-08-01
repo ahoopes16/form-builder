@@ -90,6 +90,7 @@ def build_checkbox_element(element):
     @param element: The element to turn into a form element
     @return html_contents: The HTML for the form component
     """
+
     element_name = element['label'].replace(' ', '-').lower()
 
     html_contents = "<fieldset>\n"
@@ -123,6 +124,7 @@ def build_html_form_elements(elements):
     @param elements: The form elements to convert to HTML.
     @return html_contents: The HTML generated for the elements
     """
+
     html_contents = ""
 
     for element in elements:
@@ -158,6 +160,7 @@ def export_html_file(html):
         output_file.close()
         print("Your new form was successfully created!")
         print("Check out the file {}!".format(OUTPUT_FILE))
+        
     except IOError as error:
         custom_message = "Could not open file {}\n".format(OUTPUT_FILE)
         custom_message += "Please make sure that I have permission " + \
